@@ -1,0 +1,6 @@
+@AricimAPI_HostAddress = http://localhost:5292
+
+GET {{AricimAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
