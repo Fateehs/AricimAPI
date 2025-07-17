@@ -1,46 +1,45 @@
 ﻿using Application.DTOs.Auth;
 using Application.Interfaces;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Services
+public class AuthService : IAuthService
 {
-    public class AuthService : IAuthService
+    private readonly AppDbContext _context;
+
+    public AuthService(AppDbContext context)
     {
-        // Geçici kullanıcı listesi (ileride DB kullanılacak)
-        private static readonly List<User> _users = new();
+        _context = context;
+    }
 
-        public Task<string> RegisterAsync(RegisterRequest request)
+    public async Task<string> RegisterAsync(RegisterRequest request)
+    {
+        if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+            throw new Exception("Bu email adresi zaten kayıtlı.");
+
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+        var user = new User
         {
-            if (_users.Any(u => u.Email == request.Email))
-                throw new Exception("Bu email adresi zaten kayıtlı.");
+            Name = request.Name,
+            Email = request.Email,
+            PasswordHash = hashedPassword
+        };
 
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
 
-            var user = new User
-            {
-                Name = request.Name,
-                Email = request.Email,
-                PasswordHash = hashedPassword
-            };
+        return "Kayıt başarılı.";
+    }
 
-            _users.Add(user);
+    public async Task<string> LoginAsync(LoginRequest request)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
-            return Task.FromResult("Kayıt başarılı.");
-        }
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            throw new Exception("Email veya parola hatalı.");
 
-        public Task<string> LoginAsync(LoginRequest request)
-        {
-            var user = _users.FirstOrDefault(u => u.Email == request.Email);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-                throw new Exception("Email veya parola hatalı.");
-
-            return Task.FromResult("Giriş başarılı.");
-        }
+        return "Giriş başarılı.";
     }
 }
