@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Hive;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -47,10 +48,21 @@ namespace AricimAPI.Controllers
             return Ok(hive);
         }
 
-        // POST: api/hive
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateHiveRequest request)
         {
+            // JWT token'dan userId al
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            // userId'yi request'e ata
+            request.UserId = Guid.Parse(userId);
+
             var created = await _hiveService.CreateAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }

@@ -26,7 +26,7 @@ namespace AricimAPI.Controllers
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var result = await _authService.LoginAsync(request);
-            return Ok(new { message = result });
+            return Ok(result);
         }
     }
 }

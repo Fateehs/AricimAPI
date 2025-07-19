@@ -61,7 +61,24 @@ namespace Infrastructure.Services
                 Type = hive.Type,
                 CreatedAt = hive.CreatedAt,
                 Status = hive.Status,
-                UserId = hive.UserId
+                UserId = hive.UserId,
+
+                LastInspection = hive.LastInspection,
+                NextInspection = hive.NextInspection,
+                QueenBirthDate = hive.QueenBirthDate,
+                QueenStatus = hive.QueenStatus,
+                Breed = hive.Breed,
+                IsMarked = hive.IsMarked,
+                RequeeningDate = hive.RequeeningDate,
+                CombCondition = hive.CombCondition,
+                FrameCount = hive.FrameCount,
+                HoneyAmount = hive.HoneyAmount,
+                HarvestedHoney = hive.HarvestedHoney,
+                FeedingStatus = hive.FeedingStatus,
+                DiseaseSymptoms = hive.DiseaseSymptoms,
+                BeeBehavior = hive.BeeBehavior,
+                Pests = hive.Pests,
+                Notes = hive.Notes
             };
         }
 
@@ -99,6 +116,23 @@ namespace Infrastructure.Services
             hive.Type = request.Type;
             hive.Status = request.Status;
 
+            hive.LastInspection = request.LastInspection;
+            hive.NextInspection = request.NextInspection;
+            hive.QueenBirthDate = request.QueenBirthDate;
+            hive.QueenStatus = request.QueenStatus;
+            hive.Breed = request.Breed;
+            hive.IsMarked = request.IsMarked;
+            hive.RequeeningDate = request.RequeeningDate;
+            hive.CombCondition = request.CombCondition;
+            hive.FrameCount = request.FrameCount;
+            hive.HoneyAmount = request.HoneyAmount;
+            hive.HarvestedHoney = request.HarvestedHoney;
+            hive.FeedingStatus = request.FeedingStatus;
+            hive.DiseaseSymptoms = request.DiseaseSymptoms;
+            hive.BeeBehavior = request.BeeBehavior;
+            hive.Pests = request.Pests;
+            hive.Notes = request.Notes;
+
             await _context.SaveChangesAsync();
 
             return new HiveDto
@@ -108,7 +142,24 @@ namespace Infrastructure.Services
                 Type = hive.Type,
                 CreatedAt = hive.CreatedAt,
                 Status = hive.Status,
-                UserId = hive.UserId
+                UserId = hive.UserId,
+
+                LastInspection = hive.LastInspection,
+                NextInspection = hive.NextInspection,
+                QueenBirthDate = hive.QueenBirthDate,
+                QueenStatus = hive.QueenStatus,
+                Breed = hive.Breed,
+                IsMarked = hive.IsMarked,
+                RequeeningDate = hive.RequeeningDate,
+                CombCondition = hive.CombCondition,
+                FrameCount = hive.FrameCount,
+                HoneyAmount = hive.HoneyAmount,
+                HarvestedHoney = hive.HarvestedHoney,
+                FeedingStatus = hive.FeedingStatus,
+                DiseaseSymptoms = hive.DiseaseSymptoms,
+                BeeBehavior = hive.BeeBehavior,
+                Pests = hive.Pests,
+                Notes = hive.Notes
             };
         }
 

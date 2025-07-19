@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 public class AuthService : IAuthService
 {
     private readonly AppDbContext _context;
+    private readonly ITokenService _tokenService;
 
-    public AuthService(AppDbContext context)
+    public AuthService(AppDbContext context, ITokenService tokenService)
     {
+        _tokenService = tokenService;
         _context = context;
     }
 
@@ -33,13 +35,19 @@ public class AuthService : IAuthService
         return "Kayıt başarılı.";
     }
 
-    public async Task<string> LoginAsync(LoginRequest request)
+    public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             throw new Exception("Email veya parola hatalı.");
 
-        return "Giriş başarılı.";
+        var token = _tokenService.GenerateToken(user);
+
+        return new AuthResponse
+        {
+            Message = "Giriş başarılı.",
+            Token = token
+        };
     }
 }
