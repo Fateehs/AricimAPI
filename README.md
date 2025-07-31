@@ -35,8 +35,7 @@
 ### Setup
 
 1. Clone the repository:
-   ```
-   bash
+   ```bash
    git clone https://github.com/Fateehs/AricimAPI.git
    cd AricimAPI
    ```
