@@ -11,5 +11,6 @@ namespace Application.Interfaces
     {
         Task<string> RegisterAsync(RegisterRequest request);
         Task<AuthResponse> LoginAsync(LoginRequest request);
+        Task<string> VerifyEmailAsync(string token);
     }
 }

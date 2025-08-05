@@ -28,5 +28,12 @@ namespace AricimAPI.Controllers
             var result = await _authService.LoginAsync(request);
             return Ok(result);
         }
+
+        [HttpGet("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromQuery] string token)
+        {
+            var message = await _authService.VerifyEmailAsync(token);
+            return Ok(new { message });
+        }
     }
 }
